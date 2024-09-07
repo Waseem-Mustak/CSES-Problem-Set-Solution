@@ -8,7 +8,7 @@ typedef tree<long long,null_type,less<long long>,rb_tree_tag,tree_order_statisti
 typedef tree<long long,null_type,less_equal<long long>,rb_tree_tag,tree_order_statistics_node_update> multi_indexed_set;
  
  
-const int N=1e6+2;
+const int N=1e6+2 ;
 const int M=1e9+7;
 long long NN=316,MM,S,K;
 long long test_case; 
