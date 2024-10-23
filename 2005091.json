@@ -1,0 +1,141 @@
+[
+    {
+      "usecase":{
+          "id":"by: 2005091",
+          "name":"Browse, Search Books and Filter",
+          "scenario":"User browses and searches the website to find books based on categories, authors, titles and apply filters.",
+          "actors":"User",
+          "preconditions":"User accesses the Rokomari website.",
+          "steps":[
+              "User navigates to the books section.",
+              "User selects categories or applies filters such as author, genre and publication.",
+              "User searches by title, author, or category using the search bar.",
+              "The system displays matching results based on search and filter criteria."
+          ]
+      },
+        "testcases":[
+            {
+                "name":"Valid Book Search by Title",
+                "description":"Verify that the user can search for a book by a valid title and browse results.",
+                "input":{
+                    "searchQuery":"Math Olympiad"
+                },
+                "expected":{
+                    "outcome":"Relevant books are displayed successfully.",
+                    "status":"Success"
+                }
+            },
+            {
+                "name":"Search with No Results",
+                "description":"Ensure that the system handles searches with no matching results.",
+                "input":{
+                    "searchQuery":"Unknown Title"
+                },
+                "expected":{
+                    "outcome":"No results found message is displayed.",
+                    "status":"No Results"
+                }
+            },
+            {
+                "name":"Search with Special Characters",
+                "description":"Ensure the system handles special characters in search queries correctly.",
+                "input":{
+                    "searchQuery":"#$@%BookTitle"
+                },
+                "expected":{
+                    "outcome":"No results found message is displayed.",
+                    "status":"No Results"
+                }
+            },
+            {
+                "name":"Filter by Genre , Publication and Author",
+                "description":"Verify that the system applies multiple filters and displays results accordingly.",
+                "input":{
+                    "filters":{
+                        "author":"Rahim",
+                        "genre":"Fiction",
+                        "publication":"prothoma prokashon"
+                    }
+                },
+                "expected":{
+                    "outcome":"Books matching the selected genre ,author and publication are displayed.",
+                    "status":"Success"
+                }
+            },
+            {
+                "name":"Invalid Filter Input",
+                "description":"Ensure that the system handles invalid filter inputs gracefully.",
+                "input":{
+                    "filters":{
+                        "rating":"InvalidRating"
+                    }
+                },
+                "expected":{
+                    "outcome":"No results found or error message is displayed.",
+                    "status":"Failed"
+                }
+            }
+        ]
+    },
+    {
+        "usecase":{
+            "id":"by: 2005091",
+            "name":"Add to Cart",
+            "scenario":"User adds a selected book to the shopping cart for future checkout.",
+            "actors":"User",
+            "preconditions":"User has found a book on Rokomari.com.",
+            "steps":[
+                "User selects a book and clicks on 'Add to Cart'.",
+                "The system adds the book to the cart and confirms the addition."
+            ]
+        },
+        "testcases":[
+            {
+                "name":"Valid Add to Cart",
+                "description":"Verify that a book can be successfully added to the cart.",
+                "input":{
+                    "bookID":"12345"
+                },
+                "expected":{
+                    "outcome":"Book added to cart.",
+                    "status":"Success"
+                }
+            },
+            {
+                "name":"Add Out of Stock Book",
+                "description":"Verify the system's behavior when adding an out-of-stock book to the cart.",
+                "input":{
+                    "bookID":"54321"
+                },
+                "expected":{
+                    "outcome":"Out of stock message is displayed.",
+                    "status":"Failed"
+                }
+            },
+            {
+                "name":"Add Multiple Copies",
+                "description":"Ensure the system can handle adding multiple copies of the same book.",
+                "input":{
+                    "bookID":"12345",
+                    "quantity":5
+                },
+                "expected":{
+                    "outcome":"Multiple copies added to cart.",
+                    "status":"Success"
+                }
+            },
+            {
+              "name":"Add More Copies Than Available",
+              "description":"Verify the system's behavior when trying to add more copies of a book than are available in stock.",
+              "input":{
+                  "bookID":"12345",
+                  "quantity":10
+              },
+              "expected":{
+                  "outcome":"System adds only the available copies to the cart and displays a message indicating limited stock.",
+                  "status":"Partial Success"
+              }
+            }
+        ]
+    }
+  ]
