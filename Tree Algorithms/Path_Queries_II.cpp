@@ -14,75 +14,135 @@ long long NN=316,MM,S,K;
 long long test_case; 
  
 #define ll long long
-#define lp(i,a,b) for(ll i=a;i<=b;i++)
-#define rlp(i,a,b) for(ll i=a;i>=b;i--)
-#define vec vector<long long>
 #define pb push_back
-#define rpb pop_back
-#define f first
-#define s second
 #define el "\n"
-#define pri(ara,n) for(ll i=1;i<=n;i++)cout<<ara[i]<<" ";cout<<el;
-#define priv(vec) for(auto va:vec)cout<<va<<" ";cout<<"\n";
-#define srt(ara,n) sort(ara+1,ara+1+n);
-#define srtv(vec) sort(vec.begin(), vec.end());
-#define revv(vec) reverse(vec.begin(), vec.end());
-#define coutl cout<<"Case "<<test_case<<": "
-#define in(ara,n) cin>>n;lp(i,1,n)cin>>ara[i];
-#define all(ara,n,m) lp(i,1,n)ara[i]=m;
-#define index(indexed_Set,val) indexed_Set.order_of_key(val)
-#define value(indexed_Set,ind) *indexed_Set.find_by_order(ind) 
-#define pi 2*acos(0.0)
-#define Mems(dp,n) memset(dp,n,sizeof(dp))
-
-bool myComparison(const pair<pair<ll,ll>,ll> &a,const pair<pair<ll,ll>,ll> &b)  // for vector sorting  1st element small to learge (if same then second element large to small)
-{
-    if(a.f.f==b.f.f)return a.f.s>b.f.s;
-    else return a.f.f<b.f.f;
-}
-bool cmp1(const pair<ll,ll> &a,const pair<ll,ll> &b)	// for vector sorting  1st element small to learge (if same then second element large to small)
-{
-    // return a>b;
-    if(a.f==b.f)return a.s<b.s;
-    else return a.f>b.f;
+ 
+ 
+ll node,q,tim=0;
+ll values[N],shuffledValues[N],startTime[N],chainNum[N],subtreeSiz[N];
+vector<ll>graph[N];
+ 
+// for lca
+ll depth[N],Parr[200003][20];
+ll segTreeVal[N];
+ 
+void dfs(ll u,ll p,ll d){
+    Parr[u][0]=p;
+    depth[u]=d;ll ans=0;
+    for(auto v:graph[u]){
+        if(v!=p){
+            dfs(v,u,d+1);
+            ans+=subtreeSiz[v];
+    }}
+    subtreeSiz[u]=ans+1;
 }
  
-ll lcm(ll a,ll b)
-{
-    return (a*b)/(__gcd(a,b));
+void dfsHLD(ll u,ll p,ll top_node_of_chain){
+    tim++;
+    startTime[u]=tim;
+    shuffledValues[tim]=values[u];
+    chainNum[u]=top_node_of_chain;
+    ll bigger_subtree=0,tem=0;
+    for(auto v:graph[u]){
+        if(v!=p){
+            if(subtreeSiz[v]>tem){
+                tem=subtreeSiz[v];
+                bigger_subtree=v;
+    }}}
+    if(bigger_subtree)dfsHLD(bigger_subtree,u,top_node_of_chain); //same chain
+    for(auto v:graph[u]){
+        if(v!=p){
+            if(v!=bigger_subtree){
+                dfsHLD(v,u,v);    //new chain
+}}}}
+// segment tree iteratively
+void update(ll index,ll value){
+    index+=node;
+    segTreeVal[index]=value;
+    index/=2;
+    while(index){
+        segTreeVal[index]=max(segTreeVal
+            [2*index],segTreeVal[2*index+1]);
+        index/=2;
+}}
+ 
+ll query(ll index_1,ll index_2){
+    ll ans=0;
+    index_1+=node;
+    index_2+=node+1;
+    while(index_1<index_2){
+        if(index_1 & 1){
+            ans=max(ans,segTreeVal[index_1++]);}
+        if(index_2 & 1){
+            ans=max(ans,segTreeVal[--index_2]);}
+        index_1/=2;
+        index_2/=2;
+    }
+    return ans;
 }
-ll gcd(ll a,ll b) 
-{
-    return __gcd(a,b);
+ 
+ll maxOfpathAtoB(ll a,ll b){
+    ll ans=0;
+    while(chainNum[a]!=chainNum[b]){
+        if(depth[chainNum[a]]<depth[chainNum[b]]){
+            swap(a,b);
+        }
+        ans=max(ans,query(startTime[chainNum[a]],startTime[a]));
+        a=Parr[chainNum[a]][0];
+    }
+    if(depth[a]>depth[b])swap(a,b);
+    ans=max(ans,query(startTime[a],startTime[b]));
+    return ans;
 }
  
- 
-//ll arr[1001][1001];
-
-
-
- 
-ll  ara[N],ara1[N],ara2[N],ara3[N];
- 
-vector<ll>v[N];
-
-
-
 void solve()
 {
-    ll i,j,k,l,m,n,o,p,q,r,t,a,b,h,c,d,e,f,x,y,z,ans,ans1;
+    cin>>node>>q;
+    for(int i=1;i<=node;i++)cin>>values[i];
+    for(int i=1;i<=node-1;i++)
+    {
+        int a,b;
+        cin>>a>>b;
+        graph[a].push_back(b);
+        graph[b].push_back(a);
+    }
     
+    dfs(1,0,0);
+    tim=0;
+    dfsHLD(1,0,1);// node,parent,chainNum
+ 
+    for(int i=1;i<=node;i++)
+    {
+        update(i,shuffledValues[i]);
+    }
+    while(q--)
+    {
+        ll a,b,x;
+        cin>>a;
+        if(a==1)
+        {
+            cin>>a>>x;
+            update(startTime[a],x);
+        }
+        else
+        {
+            cin>>a>>b;
+            // a=1;
+ 
+            cout<<maxOfpathAtoB(a,b)<<el;
+        }
+    }
 }
-
+ 
 int main()
 {
     fast;
     ll t=1;
-    cin>>t;
+    // cin>>t;
     test_case=1;
     while(t--)
     {
         solve();
         test_case++;
     }
-} 
+}
