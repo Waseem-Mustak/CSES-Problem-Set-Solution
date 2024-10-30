@@ -1,141 +1,288 @@
 [
     {
-      "usecase":{
-          "id":"by: 2005091",
-          "name":"Browse, Search Books and Filter",
-          "scenario":"User browses and searches the website to find books based on categories, authors, titles and apply filters.",
-          "actors":"User",
-          "preconditions":"User accesses the Rokomari website.",
-          "steps":[
-              "User navigates to the books section.",
-              "User selects categories or applies filters such as author, genre and publication.",
-              "User searches by title, author, or category using the search bar.",
-              "The system displays matching results based on search and filter criteria."
-          ]
-      },
-        "testcases":[
+        "usecase": {
+            "id": "2005091",
+            "name": "BUET-Centric Advanced Search",
+            "scenario": "User searches for people or companies associated with BUET based on specific criteria such as name, working field, and achievements.",
+            "actors": "Student, Faculty, Alumni",
+            "preconditions": "User is logged into CampusConnect.",
+            "steps": [
+                "User enters a search term related to name, working field, country, or company.",
+                "System retrieves records matching the search terms.",
+                "System displays results showing profiles or others with relevant details.",
+                "User clicks on a result for more information."
+            ]
+        },
+        "testcases": [
             {
-                "name":"Valid Book Search by Title",
-                "description":"Verify that the user can search for a book by a valid title and browse results.",
-                "input":{
-                    "searchQuery":"Math Olympiad"
-                },
-                "expected":{
-                    "outcome":"Relevant books are displayed successfully.",
-                    "status":"Success"
-                }
-            },
-            {
-                "name":"Search with No Results",
-                "description":"Ensure that the system handles searches with no matching results.",
-                "input":{
-                    "searchQuery":"Unknown Title"
-                },
-                "expected":{
-                    "outcome":"No results found message is displayed.",
-                    "status":"No Results"
-                }
-            },
-            {
-                "name":"Search with Special Characters",
-                "description":"Ensure the system handles special characters in search queries correctly.",
-                "input":{
-                    "searchQuery":"#$@%BookTitle"
-                },
-                "expected":{
-                    "outcome":"No results found message is displayed.",
-                    "status":"No Results"
-                }
-            },
-            {
-                "name":"Filter by Genre , Publication and Author",
-                "description":"Verify that the system applies multiple filters and displays results accordingly.",
-                "input":{
-                    "filters":{
-                        "author":"Rahim",
-                        "genre":"Fiction",
-                        "publication":"prothoma prokashon"
+                "name": "Search for Person by Name and Company",
+                "description": "Verify that a user can search for a person named 'Ifty' working at 'IQVIA' and view relevant profile.",
+                "input": {
+                    "searchQuery": {
+                        "name": "Ifty",
+                        "workingCompany": "IQVIA"
                     }
                 },
-                "expected":{
-                    "outcome":"Books matching the selected genre ,author and publication are displayed.",
-                    "status":"Success"
+                "expected": {
+                    "outcome": "Profile of 'Ifty' working at 'IQVIA' with campus connection is displayed.",
+                    "status": "Success"
                 }
             },
             {
-                "name":"Invalid Filter Input",
-                "description":"Ensure that the system handles invalid filter inputs gracefully.",
-                "input":{
-                    "filters":{
-                        "rating":"InvalidRating"
+                "name": "Search for Company and Location",
+                "description": "Ensure the system retrieves profiles of people working at Google in Dublin.",
+                "input": {
+                    "searchQuery": {
+                        "workingCompany": "Google",
+                        "workingCountry": "Dublin"
                     }
                 },
-                "expected":{
-                    "outcome":"No results found or error message is displayed.",
-                    "status":"Failed"
+                "expected": {
+                    "outcome": "Profiles of individuals or posts from BUET working at Google in Dublin are displayed.",
+                    "status": "Success"
+                }
+            },
+            {
+                "name": "Search by Graduation Year",
+                "description": "Verify that the user can search for students who graduated from Penn State in 2017.",
+                "input": {
+                    "searchQuery": {
+                        "institution": "Penn State",
+                        "graduationYear": 2017
+                    }
+                },
+                "expected": {
+                    "outcome": "Profiles of graduates from 2017 are displayed.",
+                    "status": "Success"
+                }
+            },
+            {
+                "name": "Search by Working Country",
+                "description": "Ensure that the system retrieves profiles of BUET alumni based in Australia.",
+                "input": {
+                    "searchQuery": {
+                        "workingCountry": "Australia"
+                    }
+                },
+                "expected": {
+                    "outcome": "Profiles of BUET alumni or posts currently in Australia are displayed.",
+                    "status": "Success"
+                }
+            },
+            {
+                "name": "Search by Research Topic",
+                "description": "Verify that users can search for profiles involved in research on Artificial Intelligence.",
+                "input": {
+                    "searchQuery": {
+                        "researchField": "Artificial Intelligence"
+                    }
+                },
+                "expected": {
+                    "outcome": "Profiles of BUET students and faculty or posts researching AI are displayed.",
+                    "status": "Success"
+                }
+            },
+            {
+                "name": "Search by Achievement",
+                "description": "Ensure profiles of ICPC World Finalists from BUET are retrievable.",
+                "input": {
+                    "searchQuery": {
+                        "achievement": "ICPC World Finalist"
+                    }
+                },
+                "expected": {
+                    "outcome": "Profiles of BUET students who are ICPC World Finalists are displayed.",
+                    "status": "Success"
+                }
+            },
+            {
+                "name": "Search by Organization",
+                "description": "Verify retrieval of profiles from BUET affiliated with IEEE.",
+                "input": {
+                    "searchQuery": {
+                        "organization": "IEEE"
+                    }
+                },
+                "expected": {
+                    "outcome": "Profiles of IEEE members from BUET are displayed.",
+                    "status": "Success"
+                }
+            },
+            {
+                "name": "Search for Multiple Fields",
+                "description": "Search for BUET students in Civil, Mechanical, and Architecture fields.",
+                "input": {
+                    "searchQuery": {
+                        "fieldOfStudy": ["Civil Engineering", "Mechanical Engineering", "Architecture"]
+                    }
+                },
+                "expected": {
+                    "outcome": "Profiles of BUET students in Civil, Mechanical, and Architecture fields are displayed.",
+                    "status": "Success"
+                }
+            },
+            {
+                "name": "No Results Found",
+                "description": "Ensure that the system handles queries with no matching results gracefully.",
+                "input": {
+                    "searchQuery": {
+                        "name": "Nonexistent Person"
+                    }
+                },
+                "expected": {
+                    "outcome": "System displays 'No results found' message.",
+                    "status": "No Results"
+                }
+            },
+            {
+                "name": "Empty Search Query",
+                "description": "Verify system behavior for an empty search input across all fields.",
+                "input": {
+                    "searchQuery": {}
+                },
+                "expected": {
+                    "outcome": "System prompts user to enter search criteria or displays 'Please enter a search term'.",
+                    "status": "Failed"
                 }
             }
         ]
     },
     {
-        "usecase":{
-            "id":"by: 2005091",
-            "name":"Add to Cart",
-            "scenario":"User adds a selected book to the shopping cart for future checkout.",
-            "actors":"User",
-            "preconditions":"User has found a book on Rokomari.com.",
-            "steps":[
-                "User selects a book and clicks on 'Add to Cart'.",
-                "The system adds the book to the cart and confirms the addition."
+        "usecase": {
+            "id": "2005091",
+            "name": "Advanced Filter-Based Search",
+            "scenario": "User applies specific filters such as batch, department, roll number, or hall name to specify their search results within BUET profiles.",
+            "actors": "Student, Faculty, Alumni",
+            "preconditions": "User is logged into CampusConnect.",
+            "steps": [
+                "User selects filters from dropdown options, such as batch, department, roll number, or hall name.",
+                "System retrieves records that match the applied filters.",
+                "System displays results with profiles meeting all selected filter criteria.",
+                "User clicks on a filtered result to view detailed profile information."
             ]
         },
-        "testcases":[
+        "testcases": [
             {
-                "name":"Valid Add to Cart",
-                "description":"Verify that a book can be successfully added to the cart.",
-                "input":{
-                    "bookID":"12345"
+                "name": "Valid Filter by Batch and Department",
+                "description": "Verify that the system correctly filters profiles by batch and department, displaying relevant BUET students.",
+                "input": {
+                    "filters": {
+                        "batch": "2017",
+                        "department": "Computer Science and Engineering"
+                    }
                 },
-                "expected":{
-                    "outcome":"Book added to cart.",
-                    "status":"Success"
+                "expected": {
+                    "outcome": "Profiles of students from batch 2017 in Computer Science and Engineering displayed.",
+                    "status": "Success"
                 }
             },
             {
-                "name":"Add Out of Stock Book",
-                "description":"Verify the system's behavior when adding an out-of-stock book to the cart.",
-                "input":{
-                    "bookID":"54321"
+                "name": "Filter by Roll Number and Hall Name",
+                "description": "Ensure that a user can apply roll number and hall name filters to view specific profiles.",
+                "input": {
+                    "filters": {
+                        "rollNumber": "1705012",
+                        "hallName": "Ahsanullah Hall"
+                    }
                 },
-                "expected":{
-                    "outcome":"Out of stock message is displayed.",
-                    "status":"Failed"
+                "expected": {
+                    "outcome": "Profile of the student with roll number 1705012 in Ahsanullah Hall displayed.",
+                    "status": "Success"
                 }
             },
             {
-                "name":"Add Multiple Copies",
-                "description":"Ensure the system can handle adding multiple copies of the same book.",
-                "input":{
-                    "bookID":"12345",
-                    "quantity":5
+                "name": "Invalid Batch and Roll Number Combination",
+                "description": "Verify the system’s response when an invalid batch and roll number combination is provided.",
+                "input": {
+                    "filters": {
+                        "batch": "2019",
+                        "rollNumber": "1705012"
+                    }
                 },
-                "expected":{
-                    "outcome":"Multiple copies added to cart.",
-                    "status":"Success"
+                "expected": {
+                    "outcome": "System displays 'No results found' as roll number 1705012 does not match batch 2019.",
+                    "status": "No Results"
                 }
             },
             {
-              "name":"Add More Copies Than Available",
-              "description":"Verify the system's behavior when trying to add more copies of a book than are available in stock.",
-              "input":{
-                  "bookID":"12345",
-                  "quantity":10
-              },
-              "expected":{
-                  "outcome":"System adds only the available copies to the cart and displays a message indicating limited stock.",
-                  "status":"Partial Success"
-              }
+                "name": "Filter by Department Only",
+                "description": "Ensure that filtering by department alone returns relevant profiles.",
+                "input": {
+                    "filters": {
+                        "department": "Civil Engineering"
+                    }
+                },
+                "expected": {
+                    "outcome": "Profiles of BUET students in Civil Engineering displayed.",
+                    "status": "Success"
+                }
+            },
+            {
+                "name": "Filter with Nonexistent Hall Name",
+                "description": "Verify the system’s behavior when filtering with an invalid hall name.",
+                "input": {
+                    "filters": {
+                        "hallName": "Invalid Hall"
+                    }
+                },
+                "expected": {
+                    "outcome": "System displays 'No results found' as 'Invalid Hall' does not exist.",
+                    "status": "No Results"
+                }
+            },
+            {
+                "name": "Multiple Filter Criteria - Department and Hall",
+                "description": "Ensure that a combination of department and hall filters returns precise results.",
+                "input": {
+                    "filters": {
+                        "department": "Mechanical Engineering",
+                        "hallName": "Suhrawardy Hall"
+                    }
+                },
+                "expected": {
+                    "outcome": "Profiles of Mechanical Engineering students from Suhrawardy Hall are displayed.",
+                    "status": "Success"
+                }
+            },
+            {
+                "name": "Partial Filter Input - Batch Only",
+                "description": "Verify that the system handles partial filter input, such as batch only, correctly.",
+                "input": {
+                    "filters": {
+                        "batch": "2018"
+                    }
+                },
+                "expected": {
+                    "outcome": "Profiles of students from batch 2018 are displayed.",
+                    "status": "Success"
+                }
+            },
+            {
+                "name": "Empty Filter Input",
+                "description": "Ensure the system prompts the user if no filter criteria are provided.",
+                "input": {
+                    "filters": {}
+                },
+                "expected": {
+                    "outcome": "System prompts user to select at least one filter criterion.",
+                    "status": "Failed"
+                }
+            },
+            {
+                "name": "Filter with Special Characters in Roll Number",
+                "description": "Check system response to roll numbers containing special characters.",
+                "input": {
+                    "filters": {
+                        "rollNumber": "1705@12"
+                    }
+                },
+                "expected": {
+                    "outcome": "System displays 'Invalid input format' as special characters are not allowed in roll numbers.",
+                    "status": "Failed"
+                }
             }
         ]
     }
-  ]
+]
+
+

@@ -3,10 +3,10 @@
 using namespace __gnu_pbds;
 using namespace std;
 #define fast ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
- 
+
 typedef tree<long long,null_type,less<long long>,rb_tree_tag,tree_order_statistics_node_update> indexed_set;
 typedef tree<long long,null_type,less_equal<long long>,rb_tree_tag,tree_order_statistics_node_update> multi_indexed_set;
- 
+
  
 const int N=1e6+2;
 const int M=1e9+7;
