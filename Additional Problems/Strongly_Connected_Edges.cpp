@@ -34,13 +34,13 @@ long long test_case;
 #define value(indexed_Set,ind) *indexed_Set.find_by_order(ind) 
 #define pi 2*acos(0.0)
 #define Mems(dp,n) memset(dp,n,sizeof(dp))
- 
+mt19937 rnd(time(0));
 bool myComparison(const pair<pair<ll,ll>,ll> &a,const pair<pair<ll,ll>,ll> &b)  // for vector sorting  1st element small to learge (if same then second element large to small)
 {
     if(a.f.f==b.f.f)return a.f.s>b.f.s;
     else return a.f.f<b.f.f;
 }
-bool cmp1(const pair<ll,ll> &a,const pair<ll,ll> &b)	// for vector sorting  1st element small to learge (if same then second element large to small)
+bool cmp1(const pair<ll,ll> &a,const pair<ll,ll> &b)   // for vector sorting  1st element small to learge (if same then second element large to small)
 {
     // return a>b;
     if(a.f==b.f)return a.s<b.s;
@@ -62,61 +62,92 @@ ll gcd(ll a,ll b)
  
  
  
-ll  ara[N],ara1[N],ara2[N],ara3[N];
+ll  ara[N],ara1[N],visited[N],vis[N];
  
-vector<ll>v[N];
+vector<ll>graph[N];
  
+ 
+ll starting_pos[N],low[N];
+ 
+ll tim=0;
+ 
+vector<pair<ll,ll>>IS_BRIDGE; 
+ll hasBridge=0;
+ll cntNode=0;
+void find_bridge(ll node,ll parent)
+{
+     cntNode++;
+    visited[node]=1;
+    tim++;
+    low[node]=starting_pos[node]=tim;
+    for(auto child:graph[node])
+    {
+        if(child==parent)continue;
+        if(visited[child]==0)
+        {
+            find_bridge(child,node);
+            low[node]=min(low[node],low[child]);
+ 
+            if(low[child]>starting_pos[node])   //part of bridge
+            {
+                // IS_BRIDGE.pb({node,child});
+               hasBridge++;
+            }
+            else                   // mearge them with one parent by DSU
+            { 
+                // Union(node,child);
+            }
+        }
+        else
+        {
+            low[node]=min(low[node],starting_pos[child]);
+        }
+    }
+}
+ 
+ 
+ll isInSameStack[N];
+void dfsTree(ll n,ll p)
+{
+     vis[n]=1;
+     isInSameStack[n]=1;
+     for(auto va:graph[n])
+     {
+          if(vis[va]==0)
+          {
+               cout<<n<<" "<<va<<el;
+               dfsTree(va,n);
+          }
+          else
+          {
+               if(va!=p&&isInSameStack[va]==1)
+               {
+                    cout<<n<<" "<<va<<el;
+               }
+          }
+     }
+     isInSameStack[n]=0;
+}
  
  
 void solve()
 {
-    ll i,j,k,l,m,n,o,p,q,r,t,a,b,h,c,d,e,f,x,y,z,ans,ans1;
-    string s1;
-    cin>>s1;
-    n=s1.size();
-    map<char,int>mp;
-    mp['A']=1;
-    mp['C']=2;
-    mp['G']=3;
-    mp['T']=4;
-    ara[1]=-1;
-    ara[2]=-1;
-    ara[3]=-1;
-    ara[4]=-1;
-    ans=0;
-    string st;
-    lp(i,0,n-1)
-    {
-        a=mp[s1[i]];
-        if(ara[a]==-1)
-        {
-            ans++;
-            ara[a]=1;
-        }
-        if(ans==4)
-        {
-            st.pb(s1[i]);
-            ara[1]=-1;
-            ara[2]=-1;
-            ara[3]=-1;
-            ara[4]=-1;
-            ans=0;
-        }
-    }
-    char cr[6];
-    cr[1]='A';
-    cr[2]='C';
-    cr[3]='G';
-    cr[4]='T';
-    lp(i,1,4)
-    {
-        if(ara[i]==-1)
-        {
-            st.pb(cr[i]);
-            break;
-        }
-    }
-    cout<<st<<el;
+     ll i,j,k,l,m,n,o,p,q,r,t,a,b,h,c,d,e,f,x,y,z,ans,ans1;
+     cin>>n>>m;
+     lp(i,1,m)
+     {
+          cin>>a>>b;
+          graph[a].pb(b);
+          graph[b].pb(a);
+     }
+     find_bridge(1,0);
+     if(hasBridge || (cntNode!=n))
+     {
+          cout<<"IMPOSSIBLE"<<endl;
+          return;
+     }
+ 
+     dfsTree(1,0);
 }
  
 int main()
