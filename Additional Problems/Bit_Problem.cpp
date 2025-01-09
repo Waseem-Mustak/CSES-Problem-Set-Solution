@@ -50,17 +50,11 @@ void solve(){
         cout<<dpSubset[ara[i]]<<" "<<dpSuperset[ara[i]]<<" "<<n- dpSubset[((~ara[i])&((1<<bit_)-1))]  <<endl;
     }
 }
-
-
-// https://codeforces.com/contest/165/problem/E
-// https://cses.fi/problemset/task/1654/ this code is it's solu
-// https://codeforces.com/blog/entry/45223
-
-
+ 
 int main(){
     int t;t=1;
     // cin>>t;
     while(t--){
         solve();
     }
-} 
+}
